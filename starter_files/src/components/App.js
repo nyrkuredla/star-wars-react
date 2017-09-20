@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import '../styles/App.css';
+import VehicleDetails from './VehicleDetails'
+import getVehicles from '../services'
 
 class App extends Component {
   constructor(props) {
@@ -9,26 +11,32 @@ class App extends Component {
   // Set props and state below.
   // You should set state for vehicles (empty array), value (empty string), pilot (empty) string.
   // Enter your code below:
-//   this.state = {
-//     vehicles: [],
-//     value: '',
-//     pilot: ''
-//   }
-//   this.handleNameChange = this.handleNameChange.bind(this)
-    // this.handleSubmot = this.handleSubmit.bind(this)
-// }
+  this.state = {
+    vehicles: [],
+    value: '',
+    pilot: ''
+  }
+  this._handleNameChange = this._handleNameChange.bind(this)
+  this._handleSubmit = this._handleSubmit.bind(this)
+}
 //
 //   // FORM: HANDLE INPUT CHANGES
 //   // handleNameChange below:
 //   // See form lesson for details.
 //   // Enter your code below:
-//   handleNameChange(event) {
-//     this.setState({
-//       pilot: event.target.name
-//     })
-//   }
-}
+  _handleNameChange(event) {
+    this.setState({
+      pilot: event.target.value
+    })
+  }
 
+  _handleSubmit(event) {
+    event.preventDefault();
+    const newPilot = this.state.pilot
+    this.setState({
+      pilot: newPilot
+    })
+  }
 
   //  FORM: SUBMIT METHOD
   // handleSubmit below:
@@ -42,6 +50,17 @@ class App extends Component {
   // Which lifecycle is best for fetching data?
   // Inside this lifecycle, you will fetch the vehicles from here: https://swapi.co/api/vehicles/
   // Once you have fetched that data, set the state of vehicles to the fetched data.
+
+  getVehicleData = () => {
+    getVehicles().then((response) => {
+      console.log(response.data.results)
+      this.setState({vehicles: response.data.results})
+    })
+  }
+
+  componentDidMount(){
+    this.getVehicleData();
+  }
   // In your response look for 'results'. It should return this array.
   // You will want to use this array when you set the state of 'vehicles'. You will need this data in your render.
   // Enter your code below:
@@ -60,7 +79,8 @@ class App extends Component {
     Store vehicles state in a variable.
     Map over this variable to access the values needed to render.
     */
-    // let vehicles = this.state.vehicles;
+    let vehicles = this.state.vehicles;
+    console.log(this.state)
     return (
       <div className="App">
         <div className="jumbotron">
@@ -70,15 +90,32 @@ class App extends Component {
         <form>
           <div className="form-group form">
             <h2>What's your name, pilot?</h2>
-            <input type="text" name="pilot" placeholder="Enter your name"
-              //  value={this.state.name} onChange={this.handleNameChange}
+            <input type="text" name="pilot" placeholder="Enter your name" value={this.state.pilot} onChange={this._handleNameChange}
             />
             <input className="btn btn-primary" type="submit" value="Submit!"
-              // onClick={this.handleSubmit}
+              onClick={this._handleSubmit}
             />
+            <h1>{this.state.pilot}</h1>
           </div>
+
         </form>
-        <div class="vehicle-cards-container"></div>
+        <div className="vehicle-cards-container">
+          {vehicles.map((vehicleInfo) => {
+            return (
+              <VehicleDetails
+                key={vehicleInfo.edited}
+                name={vehicleInfo.name}
+                model={vehicleInfo.model}
+                manufacturer={vehicleInfo.manufacturer}
+                vehicle_class={vehicleInfo.vehicle_class}
+                crew={vehicleInfo.crew}
+                length={vehicleInfo.length}
+                max_atmosphering_speed={vehicleInfo.max_atmosphering_speed}
+                cargo_capacity={vehicleInfo.cargo_capacity}
+              />
+            )
+          })}
+        </div>
         {/*
         The App component needs the following:
          jumbotron section, form section, vehicle cards section.
