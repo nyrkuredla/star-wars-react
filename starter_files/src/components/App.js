@@ -27,7 +27,7 @@ class App extends Component {
 //       pilot: event.target.name
 //     })
 //   }
-
+}
 
 
   //  FORM: SUBMIT METHOD
@@ -60,8 +60,7 @@ class App extends Component {
     Store vehicles state in a variable.
     Map over this variable to access the values needed to render.
     */
-    let vehicles = this.state.vehicles;
-    })
+    // let vehicles = this.state.vehicles;
     return (
       <div className="App">
         <div className="jumbotron">
@@ -69,10 +68,14 @@ class App extends Component {
           <p>The vehicles of Star Wars</p>
         </div>
         <form>
-          <div className="form-group">
-            <input type="text" name="pilot" value={this.state.name} onChange={this.handleNameChange}>
-            </input>
-            <input className="btn btn-primary btn-lg" type="submit" value="Submit!" onClick={this.handleSubmit}
+          <div className="form-group form">
+            <h2>What's your name, pilot?</h2>
+            <input type="text" name="pilot" placeholder="Enter your name"
+              //  value={this.state.name} onChange={this.handleNameChange}
+            />
+            <input className="btn btn-primary" type="submit" value="Submit!"
+              // onClick={this.handleSubmit}
+            />
           </div>
         </form>
         <div class="vehicle-cards-container"></div>
